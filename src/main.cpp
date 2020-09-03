@@ -1,11 +1,15 @@
 
 #include <iostream>
 
-//#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
-int main(int argc, char* argv[]) {
-    std::cout << "Hello world" << std::endl;
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+
+
+
+int main()
+{
 
     return 0;
 }

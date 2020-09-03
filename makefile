@@ -2,14 +2,14 @@ MAINPROG=game
 CC=gcc
 CXX=g++
 CPPFLAGS=-g -std=c++17
-LFLAGS= -L/usr/local/lib/
+LFLAGS= -L/usr/local/lib/ -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 CFLAGS=-g -I/usr/local/include/
 LIBS= -lglfw3 -lGL -lm -lXrandr -lXi -lX11 -lXxf86vm -lpthread
 VPATH = src
 BUILDDIR = build
 TESTDIR = test
 TARGET=$(BUILDDIR)/$(MAINPROG)
-CPPS=$(wildcard $(VPATH)/*.cpp)
+CPPS=$(wildcard $(VPATH)/*.cpp) $(wildcard $(VPATH)/*.c)
 LINK=g++ $(CPPFLAGS)
 OBJS=$(CPPS:%.cpp=%.o)
 
@@ -23,11 +23,6 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(LINK) $(FLAGS) -o $(TARGET) $^ $(LFLAGS)
-
-dependencies:
-	cmake lib/GLFW/.
-	make -C lib/GLFW
-
 
 run:
 	./$(TARGET)
