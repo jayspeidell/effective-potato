@@ -11,7 +11,7 @@ TESTDIR = test
 TARGET=$(BUILDDIR)/$(MAINPROG)
 CPPS=$(wildcard $(VPATH)/*.cpp) $(wildcard $(VPATH)/*.c)
 LINK=g++ $(CPPFLAGS)
-OBJS= $(CPPS:%.c=%.o) 
+OBJS= $(CPPS:%.c=%.o)
 
 
 
@@ -19,7 +19,7 @@ OBJS= $(CPPS:%.c=%.o)
 all: $(TARGET)
 
 %.o: %.cpp
-	$(CXX) $(CPPFLAGS) -MMD -o $@ -c $*.cpp glad/glad.c $(CFLAGS)
+	$(CXX) $(CPPFLAGS) -MMD -o $@ -c $*.cpp glad.c $(CFLAGS)
 	#$(CXX) $(CPPFLAGS) -MMD -o $@ -c $(CPPS) $(CFLAGS)
 
 $(TARGET): $(OBJS)

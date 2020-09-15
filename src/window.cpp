@@ -5,5 +5,5 @@
 
 
 void hw() {
-    std::cout << "Testing linked makefile." << std::endl;
+    std::cout << "Testing linker makefile." << std::endl;
 }
