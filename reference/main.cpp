@@ -3,7 +3,6 @@
 #include <iostream>
 #include <math.h>
 #include "window.h"
-#include "shader.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -64,9 +63,9 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    #ifdef __APPLE__
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
     // glfw window creation
     // --------------------
@@ -92,7 +91,6 @@ int main()
     // ==============Shader Program==============================
     // ==========================================================
 
-    /*
     // Vertex shader
     unsigned int vertexShader; // address
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -116,9 +114,6 @@ int main()
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    */
-
-    Shader myShader("src/shaders/shaders.vs", "src/shaders/shaders.fs");
 
     // ==========================================================
     // ==============Buffers=====================================
@@ -225,17 +220,15 @@ int main()
         // GL_STATIC_DRAW: the data is set only once and used many times.
         // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
 
-
+        glUseProgram(shaderProgram);
 
 
         // ****** Accessing uniform variables **************
         float timeValue = glfwGetTime();
         float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        //int vertexColorLocation = glGetUniformLocation(myShader, "ourColor");
-
-        myShader.use();
-        myShader.setFloat("ourColor", greenValue);
-        //glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        glUseProgram(shaderProgram);
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 
         glBindVertexArray(VAO);
@@ -243,13 +236,26 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        // testing shaders
+        int  success;
+        char infoLog[512];
+        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+        if(!success)
+        {
+            glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+            std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        }
+        glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+        if(!success) {
+            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 
         }
         // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
 
-
+    }
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
