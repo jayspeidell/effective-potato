@@ -17,6 +17,8 @@ OBJS= $(CPPS:%.c=%.o)
 
 
 all: $(TARGET)
+	# Develop shaders in source file, deploy in build. 
+	rsync -a --delete src/shaders/ build/shaders/
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) -MMD -o $@ -c $*.cpp glad.c $(CFLAGS)

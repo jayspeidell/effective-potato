@@ -92,34 +92,10 @@ int main()
     // ==============Shader Program==============================
     // ==========================================================
 
-    /*
-    // Vertex shader
-    unsigned int vertexShader; // address
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    // Moved to shader.h
 
-    // Fragment shader, next stage
-    unsigned int fragmentShader; // address
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Create a shader program and attach the compiled shaders.
-    unsigned int shaderProgram; // address
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glUseProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    */
-
-    Shader myShader("src/shaders/shaders.vs", "src/shaders/shaders.fs");
-
+    //Shader myShader("src/shaders/shaders.vs", "src/shaders/shaders.fs");
+    Shader myShader("build/shaders/shaders.vs", "build/shaders/shaders.fs");
     // ==========================================================
     // ==============Buffers=====================================
     // ==========================================================
@@ -167,7 +143,8 @@ int main()
         0.5,0.5,0.0,
         -0.5,0.5,0.0,
         0.5,-0.5,0.0,
-        -0.5,-0.5,0.0
+        -0.5,-0.5,0.0,
+        -0.3,-0.8,0.1
     };
 
     unsigned int VAO; // address
@@ -188,9 +165,14 @@ int main()
     // ==========================================================
     // Builds off of VAO
 
+    /*
+    What happening here is that we're selecting points from the lists
+    of vertices to build triangles.
+    */
+
     unsigned int indices[] {
-        0,2,1//,
-        //2,3,1
+        0,2,1, // Triangle 1
+        2,3,4  // Triangle 2
     };
 
     unsigned int EBO;
@@ -224,8 +206,6 @@ int main()
         // GL_STREAM_DRAW: the data is set only once and used by the GPU at most a few times.
         // GL_STATIC_DRAW: the data is set only once and used many times.
         // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
-
-
 
 
         // ****** Accessing uniform variables **************
